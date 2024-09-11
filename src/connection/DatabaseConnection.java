@@ -1,9 +1,9 @@
 package connection;
 
+import encryption.BCrypt;
 import model.User;
 
 import java.sql.*;
-
 
 public class DatabaseConnection {
     // Database Configurations
@@ -16,25 +16,35 @@ public class DatabaseConnection {
             // Establish connection to database
             Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 
+            // Replace the ? with the values
+            // Parameter index referring to the location of the ? by index
             // Create SQL query
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT * FROM users WHERE username = ? AND password = ?"
             );
 
-            // Replace the ? with the values
-            // Parameter index referring to the location of the ? by index
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+            String bcryptHashString = BCrypt.hashpw(password, BCrypt.gensalt());
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println(bcryptHashString);
 
-            if (resultSet.next()) {
-                // Success
+            Boolean result = BCrypt.checkpw(password, bcryptHashString);
 
-                // Get id
-                int userId = resultSet.getInt("idusers");
+            System.out.println(result);
 
-                return new User(userId, username, password);
+            if (result) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    // Success
+
+                    // Get id
+                    int userId = resultSet.getInt("idusers");
+
+                    return new User(userId, username, password);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

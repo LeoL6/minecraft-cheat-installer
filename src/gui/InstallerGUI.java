@@ -60,7 +60,14 @@ public class InstallerGUI extends BaseFrame{
 
         ArrayList<String> versionList = new ArrayList<>();
 
-        File[] files = new File(defaultPath + "\\versions").listFiles();
+        File[] files = {};
+
+        try {
+            files = new File(defaultPath + "\\versions").listFiles();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         for (File file : files) {
             if (file.isDirectory()) {
                 if (file.getName().contains("1.12.2") || file.getName().contains("1.20.2")) {
@@ -79,6 +86,14 @@ public class InstallerGUI extends BaseFrame{
         installButton.setBounds(20, 180, 120, 24);
         installButton.addActionListener(e -> {
             String version = String.valueOf(versionListComboBox.getSelectedItem());
+
+            // ADD "name": "com.etomi:loader:1.0" to the json
+
+            // ADD com/etomi/loader/1.0/loader-1.0.jar to libraries folder in .minecraft
+
+            // Then when minecraft runs it will load the loader as a library and if I have a line of code that
+            // System.out.printlines then I can show that hte mod is loaded
+
             System.out.println("Installing: " + version);
         });
         add(installButton);
