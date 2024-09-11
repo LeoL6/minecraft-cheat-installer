@@ -1,8 +1,5 @@
 package model;
 
-/**
- * @author BrownZombie 9/5/2024
- */
 public class User {
     private final int uid;
     private final String username, password;

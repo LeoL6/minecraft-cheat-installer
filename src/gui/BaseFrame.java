@@ -4,9 +4,6 @@ import model.User;
 
 import javax.swing.*;
 
-/**
- * @author BrownZombie 9/8/2024
- */
 public abstract class BaseFrame extends JFrame {
 
     protected User user;

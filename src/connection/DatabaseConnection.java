@@ -4,9 +4,6 @@ import model.User;
 
 import java.sql.*;
 
-/**
- * @author BrownZombie 9/7/2024
- */
 
 public class DatabaseConnection {
     // Database Configurations

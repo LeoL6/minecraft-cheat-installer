@@ -5,14 +5,9 @@ import model.User;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
-/**
- * @author BrownZombie 9/8/2024
- */
 public class InstallerGUI extends BaseFrame{
     public InstallerGUI(User user) {
         super("Installer", 300, 250, user);

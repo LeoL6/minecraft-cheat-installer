@@ -6,9 +6,6 @@ import model.User;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
-/**
- * @author BrownZombie 9/8/2024
- */
 public class LoginGUI extends BaseFrame {
     public LoginGUI() {
         super("Login", 300, 220);
