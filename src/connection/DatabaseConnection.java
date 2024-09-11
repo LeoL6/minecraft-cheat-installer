@@ -1,0 +1,49 @@
+package connection;
+
+import model.User;
+
+import java.sql.*;
+
+/**
+ * @author BrownZombie 9/7/2024
+ */
+
+public class DatabaseConnection {
+    // Database Configurations
+    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/login_db";
+    private static final String DB_USERNAME = "leo";
+    private static final String DB_PASSWORD = "password123";
+
+    public static User validateLogin(String username, String password) {
+        try {
+            // Establish connection to database
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+
+            // Create SQL query
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM users WHERE username = ? AND password = ?"
+            );
+
+            // Replace the ? with the values
+            // Parameter index referring to the location of the ? by index
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // Success
+
+                // Get id
+                int userId = resultSet.getInt("idusers");
+
+                return new User(userId, username, password);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // If not valid user
+        return null;
+    }
+}
