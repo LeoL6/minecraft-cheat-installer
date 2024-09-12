@@ -28,7 +28,7 @@ public class DatabaseConnection {
 
                 String salt = saltResultSet.getString("hash");
 
-                salt.substring(salt.lastIndexOf('.'));
+                salt.substring(0, salt.length() / 2);
 
                 String bcryptHashString = BCrypt.hashpw(password, salt);
 
