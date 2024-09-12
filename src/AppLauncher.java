@@ -11,3 +11,5 @@ public class AppLauncher {
         });
     }
 }
+
+//$2a$10$3Pgv1U/QetQOytR9QTuVb.Lj/kA/VZYmSILipvAxlhnJ8.JPkCgjO

@@ -16,34 +16,45 @@ public class DatabaseConnection {
             // Establish connection to database
             Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 
-            // Replace the ? with the values
-            // Parameter index referring to the location of the ? by index
-            // Create SQL query
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "SELECT * FROM users WHERE username = ? AND password = ?"
+            PreparedStatement preparedSaltStatement = connection.prepareStatement(
+                    "SELECT * FROM users WHERE username = ?"
             );
 
-            String bcryptHashString = BCrypt.hashpw(password, BCrypt.gensalt());
+            preparedSaltStatement.setString(1, username);
 
-            System.out.println(bcryptHashString);
+            ResultSet saltResultSet = preparedSaltStatement.executeQuery();
 
-            Boolean result = BCrypt.checkpw(password, bcryptHashString);
+            if (saltResultSet.next()) {
 
-            System.out.println(result);
+                String salt = saltResultSet.getString("hash");
 
-            if (result) {
-                preparedStatement.setString(1, username);
-                preparedStatement.setString(2, password);
+                salt.substring(salt.lastIndexOf('.'));
 
-                ResultSet resultSet = preparedStatement.executeQuery();
+                String bcryptHashString = BCrypt.hashpw(password, salt);
 
-                if (resultSet.next()) {
-                    // Success
+                Boolean result = BCrypt.checkpw(password, bcryptHashString);
 
-                    // Get id
-                    int userId = resultSet.getInt("idusers");
+                if (result) {
+                    // Replace the ? with the values
+                    // Parameter index referring to the location of the ? by index
+                    // Create SQL query
+                    PreparedStatement preparedAuthStatement = connection.prepareStatement(
+                            "SELECT * FROM users WHERE username = ? AND hash = ?"
+                    );
 
-                    return new User(userId, username, password);
+                    preparedAuthStatement.setString(1, username);
+                    preparedAuthStatement.setString(2, bcryptHashString);
+
+                    ResultSet resultSet = preparedAuthStatement.executeQuery();
+
+                    if (resultSet.next()) {
+                        // Success
+
+                        // Get id
+                        int userId = resultSet.getInt("uid");
+
+                        return new User(userId, username, password);
+                    }
                 }
             }
         } catch (SQLException e) {
