@@ -1,11 +1,17 @@
 package gui;
 
 import model.User;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class InstallerGUI extends BaseFrame{
@@ -85,14 +91,40 @@ public class InstallerGUI extends BaseFrame{
         JButton installButton = new JButton("Install");
         installButton.setBounds(20, 180, 120, 24);
         installButton.addActionListener(e -> {
-            String version = String.valueOf(versionListComboBox.getSelectedItem());
-
             // ADD "name": "com.etomi:loader:1.0" to the json
 
             // ADD com/etomi/loader/1.0/loader-1.0.jar to libraries folder in .minecraft
 
             // Then when minecraft runs it will load the loader as a library and if I have a line of code that
             // System.out.printlines then I can show that hte mod is loaded
+
+            // C:\Users\Administrator\AppData\Roaming\.minecraft\libraries
+
+            String version = String.valueOf(versionListComboBox.getSelectedItem());
+
+            // ADD TO JSON
+//            JSONParser parser = new JSONParser();
+//            File versionJsonFile = new File(defaultPath + "\\versions\\" + version + "\\" + version + ".json");
+//            System.out.println(versionJsonFile);
+//            JSONArray jsonArray = (JSONArray) parser.parse(new FileReader(versionJsonFile));
+//
+//            JSONObject versionObject = new JSONObject();
+//            versionObject.put("name", "cc.squidhack:loader:1.0");
+//
+//            jsonArray.add(versionObject);
+//
+//            FileWriter fileWriter = new FileWriter(versionJsonFile);
+//            fileWriter.write(jsonArray.toJSONString());
+//            fileWriter.flush();
+
+            // ADD LOADER TO LIBRARIES
+
+            String libraryPath = defaultPath + "/libraries/cc/squidhack/loader";
+
+            File libraryDir = new File(libraryPath);
+            if (!libraryDir.exists()){
+                libraryDir.mkdirs();
+            }
 
             System.out.println("Installing: " + version);
         });
