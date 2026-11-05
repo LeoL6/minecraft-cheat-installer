@@ -1,5 +1,5 @@
 # Installer
-A simple minecraft cheat installer written in Java using Swing, MySQL, and BCrypt password hashing
+A simple minecraft mod installer written in Java using Swing, MySQL, and BCrypt password hashing
 
 Login page
 
